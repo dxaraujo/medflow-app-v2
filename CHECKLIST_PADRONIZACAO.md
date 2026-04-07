@@ -48,7 +48,7 @@ Este checklist segue o padrao adotado no branch `cursor/estrutura-backend-inicia
 
 - [ ] Campos de dominio em portugues
 - [ ] Campos persistidos em `snake_case`
-- [ ] IDs com sufixo `_id` (ex.: `paciente_id`, `profissional_id`, `local_id`)
+- [ ] IDs com sufixo `_id` (ex.: `paciente_id`, `profissional_id`, `local_atendimento_id`)
 - [ ] Sem acentos em identificadores (`convenio`, nao `convênio`)
 
 ## 7) Consistencia entre camadas

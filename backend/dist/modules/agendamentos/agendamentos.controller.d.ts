@@ -12,7 +12,7 @@ export declare class AgendamentosController {
     } & {
         id: string;
     }>;
-    findAll(pagination: PaginationDto, profissional_id?: string, local_id?: string, paciente_id?: string, tipo?: string, status?: string, data_inicio?: string, data_fim?: string): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("mongoose").Document<unknown, {}, import("./schemas/agendamento.schema").Agendamento, {}, import("mongoose").DefaultSchemaOptions> & import("./schemas/agendamento.schema").Agendamento & {
+    findAll(pagination: PaginationDto, profissional_id?: string, local_atendimento_id?: string, paciente_id?: string, tipo?: string, status?: string, data_inicio?: string, data_fim?: string): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("mongoose").Document<unknown, {}, import("./schemas/agendamento.schema").Agendamento, {}, import("mongoose").DefaultSchemaOptions> & import("./schemas/agendamento.schema").Agendamento & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;

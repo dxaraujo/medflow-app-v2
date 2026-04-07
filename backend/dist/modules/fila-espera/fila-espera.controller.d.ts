@@ -11,7 +11,7 @@ export declare class FilaEsperaController {
     } & {
         id: string;
     }>;
-    findAll(profissional_id?: string, local_id?: string, status?: string): Promise<import("../../common/dto").PaginatedResult<import("mongoose").Document<unknown, {}, import("./schemas/fila-espera.schema").FilaEspera, {}, import("mongoose").DefaultSchemaOptions> & import("./schemas/fila-espera.schema").FilaEspera & {
+    findAll(profissional_id?: string, local_atendimento_id?: string, status?: string): Promise<import("../../common/dto").PaginatedResult<import("mongoose").Document<unknown, {}, import("./schemas/fila-espera.schema").FilaEspera, {}, import("mongoose").DefaultSchemaOptions> & import("./schemas/fila-espera.schema").FilaEspera & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;

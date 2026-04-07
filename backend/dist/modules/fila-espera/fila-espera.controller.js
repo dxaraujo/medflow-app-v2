@@ -27,10 +27,10 @@ let FilaEsperaController = class FilaEsperaController {
     create(dto) {
         return this.filaEsperaService.create(dto);
     }
-    findAll(profissional_id, local_id, status) {
+    findAll(profissional_id, local_atendimento_id, status) {
         return this.filaEsperaService.findAll({
             profissional_id,
-            local_id,
+            local_atendimento_id,
             status,
         });
     }
@@ -51,10 +51,10 @@ __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Listar fila de espera' }),
     (0, swagger_1.ApiQuery)({ name: 'profissional_id', required: false }),
-    (0, swagger_1.ApiQuery)({ name: 'local_id', required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'local_atendimento_id', required: false }),
     (0, swagger_1.ApiQuery)({ name: 'status', required: false }),
     __param(0, (0, common_1.Query)('profissional_id')),
-    __param(1, (0, common_1.Query)('local_id')),
+    __param(1, (0, common_1.Query)('local_atendimento_id')),
     __param(2, (0, common_1.Query)('status')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, String]),

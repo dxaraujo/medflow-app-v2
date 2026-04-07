@@ -92,7 +92,7 @@ export class CreateAgendamentoDto {
 
   @ApiProperty({ description: 'ID do local de atendimento' })
   @IsString()
-  local_id: string;
+  local_atendimento_id: string;
 
   @ApiProperty({ enum: TIPOS })
   @IsEnum(TIPOS)

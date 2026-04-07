@@ -61,7 +61,7 @@ let FilaEspera = class FilaEspera {
     paciente_id;
     agendamento_id;
     profissional_id;
-    local_id;
+    local_atendimento_id;
     horario_checkin;
     horario_inicio_atendimento;
     horario_fim_atendimento;
@@ -88,7 +88,7 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'LocalAtendimento', required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
-], FilaEspera.prototype, "local_id", void 0);
+], FilaEspera.prototype, "local_atendimento_id", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: data_info_schema_1.DataInfoSchema, required: true }),
     __metadata("design:type", data_info_schema_1.DataInfo)
@@ -136,7 +136,7 @@ exports.FilaEspera = FilaEspera = __decorate([
 exports.FilaEsperaSchema = mongoose_1.SchemaFactory.createForClass(FilaEspera);
 exports.FilaEsperaSchema.index({
     profissional_id: 1,
-    local_id: 1,
+    local_atendimento_id: 1,
     status: 1,
     posicao_fila: 1,
 });

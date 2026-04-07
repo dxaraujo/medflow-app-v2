@@ -29,7 +29,7 @@ export class AgendamentosController {
   @Get()
   @ApiOperation({ summary: 'Listar agendamentos (paginado)' })
   @ApiQuery({ name: 'profissional_id', required: false })
-  @ApiQuery({ name: 'local_id', required: false })
+  @ApiQuery({ name: 'local_atendimento_id', required: false })
   @ApiQuery({ name: 'paciente_id', required: false })
   @ApiQuery({ name: 'tipo', required: false })
   @ApiQuery({ name: 'status', required: false })
@@ -38,7 +38,7 @@ export class AgendamentosController {
   findAll(
     @Query() pagination: PaginationDto,
     @Query('profissional_id') profissional_id?: string,
-    @Query('local_id') local_id?: string,
+    @Query('local_atendimento_id') local_atendimento_id?: string,
     @Query('paciente_id') paciente_id?: string,
     @Query('tipo') tipo?: string,
     @Query('status') status?: string,
@@ -47,7 +47,7 @@ export class AgendamentosController {
   ) {
     return this.agendamentosService.findAll(pagination, {
       profissional_id,
-      local_id,
+      local_atendimento_id,
       paciente_id,
       tipo,
       status,

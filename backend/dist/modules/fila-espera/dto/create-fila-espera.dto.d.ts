@@ -11,7 +11,7 @@ export declare class CreateFilaEsperaDto {
     paciente_id: string;
     agendamento_id?: string;
     profissional_id: string;
-    local_id: string;
+    local_atendimento_id: string;
     horario_checkin: CreateDataInfoDto;
     prioridade: string;
     status: string;

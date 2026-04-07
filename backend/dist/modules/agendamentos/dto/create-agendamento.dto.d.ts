@@ -16,7 +16,7 @@ export declare class TelemedicinaAgendamentoDto {
 }
 export declare class CreateAgendamentoDto {
     profissional_id: string;
-    local_id: string;
+    local_atendimento_id: string;
     tipo: string;
     paciente_id?: string;
     data_horario_inicio: CreateDataInfoDto;

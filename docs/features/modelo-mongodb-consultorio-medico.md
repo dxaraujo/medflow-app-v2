@@ -635,7 +635,7 @@ Todo campo de data relevante utiliza este sub-documento. O desmembramento evita 
 {
   "_id":             { "type": "ObjectId", "required": true },
   "profissional_id": { "type": "ObjectId", "ref": "profissionais", "required": true },
-  "local_id":        { "type": "ObjectId", "ref": "locais_atendimento", "required": true },
+  "local_atendimento_id": { "type": "ObjectId", "ref": "locais_atendimento", "required": true },
 
   "tipo": {
     "type": "String", "required": true,
@@ -744,7 +744,7 @@ agendamento.data_horario_fim = inicio + duracao_minutos;
 
 | Índice | Tipo | Campos | Justificativa |
 |---|---|---|---|
-| Grade do dia | Compound | `{ profissional_id: 1, local_id: 1, "data_horario_inicio.data_completa": 1 }` | Query principal: consultas + bloqueios em uma única chamada. |
+| Grade do dia | Compound | `{ profissional_id: 1, local_atendimento_id: 1, "data_horario_inicio.data_completa": 1 }` | Query principal: consultas + bloqueios em uma única chamada. |
 | Visão mensal | Compound | `{ profissional_id: 1, "data_horario_inicio.ano": 1, "data_horario_inicio.mes": 1 }` | Calendário e ocupação. |
 | Tipo + período | Compound | `{ tipo: 1, "data_horario_inicio.ano": 1, "data_horario_inicio.mes": 1 }` | Filtrar por tipo; relatórios de distribuição. |
 | Paciente | Single (sparse) | `{ paciente_id: 1 }` | Histórico do paciente. Sparse ignora bloqueios. |
@@ -755,7 +755,7 @@ agendamento.data_horario_fim = inicio + duracao_minutos;
 ### Relacionamentos
 
 - `profissional_id` → `profissionais._id`
-- `local_id` → `locais_atendimento._id`
+- `local_atendimento_id` → `locais_atendimento._id`
 - `paciente_id` → `pacientes._id`
 - Referenciado por: `atendimentos.agendamento_id`, `fila_espera.agendamento_id`
 
@@ -773,7 +773,7 @@ agendamento.data_horario_fim = inicio + duracao_minutos;
   "paciente_id":    { "type": "ObjectId", "ref": "pacientes", "required": true },
   "agendamento_id": { "type": "ObjectId", "ref": "agendamentos", "required": false },
   "profissional_id": { "type": "ObjectId", "ref": "profissionais", "required": true },
-  "local_id":       { "type": "ObjectId", "ref": "locais_atendimento", "required": true },
+  "local_atendimento_id": { "type": "ObjectId", "ref": "locais_atendimento", "required": true },
 
   "horario_checkin":             { "type": "Subdocument (data_info)", "required": true },
   "horario_inicio_atendimento":  { "type": "Subdocument (data_info)", "required": false },
@@ -804,7 +804,7 @@ agendamento.data_horario_fim = inicio + duracao_minutos;
 
 | Índice | Tipo | Campos | Justificativa |
 |---|---|---|---|
-| Fila ativa | Compound | `{ profissional_id: 1, local_id: 1, status: 1, posicao_fila: 1 }` | Listar pacientes aguardando, ordenados. |
+| Fila ativa | Compound | `{ profissional_id: 1, local_atendimento_id: 1, status: 1, posicao_fila: 1 }` | Listar pacientes aguardando, ordenados. |
 | Tempo de espera | Compound | `{ "horario_checkin.data_completa": 1, status: 1 }` | Dashboard de tempo médio. |
 | TTL | TTL | `{ "horario_checkin.data_completa": 1 }`, expireAfterSeconds: 172800 | Auto-expiração em 48h. |
 
@@ -1055,7 +1055,7 @@ erDiagram
     agendamentos {
         ObjectId _id PK
         ObjectId profissional_id FK
-        ObjectId local_id FK
+        ObjectId local_atendimento_id FK
         ObjectId paciente_id FK
         String tipo
         data_info data_horario_inicio
@@ -1074,7 +1074,7 @@ erDiagram
         ObjectId paciente_id FK
         ObjectId agendamento_id FK
         ObjectId profissional_id FK
-        ObjectId local_id FK
+        ObjectId local_atendimento_id FK
         data_info horario_checkin
         String prioridade
         String status
@@ -1128,8 +1128,8 @@ erDiagram
     profissionais }o--o{ locais_atendimento : "N:M via locais_vinculados[]"
 
     locais_atendimento ||--o{ atendimentos : "1:N local_atendimento_id"
-    locais_atendimento ||--o{ agendamentos : "1:N local_id"
-    locais_atendimento ||--o{ fila_espera : "1:N local_id"
+    locais_atendimento ||--o{ agendamentos : "1:N local_atendimento_id"
+    locais_atendimento ||--o{ fila_espera : "1:N local_atendimento_id"
 
     agendamentos ||--o| atendimentos : "1:1 agendamento_id"
     agendamentos ||--o| fila_espera : "1:1 agendamento_id"

@@ -28,10 +28,10 @@ let AgendamentosController = class AgendamentosController {
     create(dto) {
         return this.agendamentosService.create(dto);
     }
-    findAll(pagination, profissional_id, local_id, paciente_id, tipo, status, data_inicio, data_fim) {
+    findAll(pagination, profissional_id, local_atendimento_id, paciente_id, tipo, status, data_inicio, data_fim) {
         return this.agendamentosService.findAll(pagination, {
             profissional_id,
-            local_id,
+            local_atendimento_id,
             paciente_id,
             tipo,
             status,
@@ -62,7 +62,7 @@ __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Listar agendamentos (paginado)' }),
     (0, swagger_1.ApiQuery)({ name: 'profissional_id', required: false }),
-    (0, swagger_1.ApiQuery)({ name: 'local_id', required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'local_atendimento_id', required: false }),
     (0, swagger_1.ApiQuery)({ name: 'paciente_id', required: false }),
     (0, swagger_1.ApiQuery)({ name: 'tipo', required: false }),
     (0, swagger_1.ApiQuery)({ name: 'status', required: false }),
@@ -70,7 +70,7 @@ __decorate([
     (0, swagger_1.ApiQuery)({ name: 'data_fim', required: false }),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, common_1.Query)('profissional_id')),
-    __param(2, (0, common_1.Query)('local_id')),
+    __param(2, (0, common_1.Query)('local_atendimento_id')),
     __param(3, (0, common_1.Query)('paciente_id')),
     __param(4, (0, common_1.Query)('tipo')),
     __param(5, (0, common_1.Query)('status')),

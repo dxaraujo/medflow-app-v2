@@ -9,7 +9,7 @@ export declare class FilaEsperaService {
     create(dto: CreateFilaEsperaDto): Promise<FilaEsperaDocument>;
     findAll(filters?: {
         profissional_id?: string;
-        local_id?: string;
+        local_atendimento_id?: string;
         status?: string;
     }): Promise<PaginatedResult<FilaEsperaDocument>>;
     findById(id: string): Promise<FilaEsperaDocument>;

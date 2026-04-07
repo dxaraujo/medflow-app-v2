@@ -131,7 +131,7 @@ export declare const TIPO_AGENDAMENTO: readonly ["primeira_consulta", "consulta"
 export declare const STATUS_AGENDAMENTO: readonly ["agendado", "confirmado", "em_espera", "em_atendimento", "finalizado", "cancelado", "faltou", "bloqueado"];
 export declare class Agendamento {
     profissional_id: Types.ObjectId;
-    local_id: Types.ObjectId;
+    local_atendimento_id: Types.ObjectId;
     tipo: string;
     paciente_id?: Types.ObjectId;
     data_horario_inicio: DataInfo;
@@ -167,7 +167,7 @@ export declare const AgendamentoSchema: import("mongoose").Schema<Agendamento, i
     }, "id"> & {
         id: string;
     }> | undefined;
-    local_id?: import("mongoose").SchemaDefinitionProperty<Types.ObjectId, Agendamento, import("mongoose").Document<unknown, {}, Agendamento, {
+    local_atendimento_id?: import("mongoose").SchemaDefinitionProperty<Types.ObjectId, Agendamento, import("mongoose").Document<unknown, {}, Agendamento, {
         id: string;
     }, import("mongoose").DefaultSchemaOptions> & Omit<Agendamento & {
         _id: Types.ObjectId;

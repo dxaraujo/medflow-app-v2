@@ -83,7 +83,7 @@ export class Agendamento {
   profissional_id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'LocalAtendimento', required: true })
-  local_id: Types.ObjectId;
+  local_atendimento_id: Types.ObjectId;
 
   @Prop({ type: String, required: true, enum: TIPO_AGENDAMENTO })
   tipo: string;
@@ -138,7 +138,7 @@ export const AgendamentoSchema = SchemaFactory.createForClass(Agendamento);
 
 AgendamentoSchema.index({
   profissional_id: 1,
-  local_id: 1,
+  local_atendimento_id: 1,
   'data_horario_inicio.data_completa': 1,
 });
 AgendamentoSchema.index({

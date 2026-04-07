@@ -9,7 +9,7 @@ export declare class AgendamentosService {
     create(dto: CreateAgendamentoDto): Promise<AgendamentoDocument>;
     findAll(pagination: PaginationDto, filters?: {
         profissional_id?: string;
-        local_id?: string;
+        local_atendimento_id?: string;
         paciente_id?: string;
         tipo?: string;
         status?: string;

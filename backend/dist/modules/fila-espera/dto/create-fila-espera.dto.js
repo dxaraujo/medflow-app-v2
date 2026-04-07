@@ -63,7 +63,7 @@ class CreateFilaEsperaDto {
     paciente_id;
     agendamento_id;
     profissional_id;
-    local_id;
+    local_atendimento_id;
     horario_checkin;
     prioridade;
     status;
@@ -93,7 +93,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'ID do local de atendimento' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateFilaEsperaDto.prototype, "local_id", void 0);
+], CreateFilaEsperaDto.prototype, "local_atendimento_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ type: data_info_dto_1.CreateDataInfoDto }),
     (0, class_validator_1.ValidateNested)(),

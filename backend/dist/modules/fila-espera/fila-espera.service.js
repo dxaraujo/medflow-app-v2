@@ -34,8 +34,8 @@ let FilaEsperaService = class FilaEsperaService {
         const query = {};
         if (filters?.profissional_id)
             query['profissional_id'] = filters.profissional_id;
-        if (filters?.local_id)
-            query['local_id'] = filters.local_id;
+        if (filters?.local_atendimento_id)
+            query['local_atendimento_id'] = filters.local_atendimento_id;
         if (filters?.status)
             query['status'] = filters.status;
         const data = await this.filaModel

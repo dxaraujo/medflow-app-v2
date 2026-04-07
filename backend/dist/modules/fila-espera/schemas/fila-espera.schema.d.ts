@@ -79,7 +79,7 @@ export declare class FilaEspera {
     paciente_id: Types.ObjectId;
     agendamento_id?: Types.ObjectId;
     profissional_id: Types.ObjectId;
-    local_id: Types.ObjectId;
+    local_atendimento_id: Types.ObjectId;
     horario_checkin: DataInfo;
     horario_inicio_atendimento?: DataInfo;
     horario_fim_atendimento?: DataInfo;
@@ -126,7 +126,7 @@ export declare const FilaEsperaSchema: import("mongoose").Schema<FilaEspera, imp
     }, "id"> & {
         id: string;
     }> | undefined;
-    local_id?: import("mongoose").SchemaDefinitionProperty<Types.ObjectId, FilaEspera, import("mongoose").Document<unknown, {}, FilaEspera, {
+    local_atendimento_id?: import("mongoose").SchemaDefinitionProperty<Types.ObjectId, FilaEspera, import("mongoose").Document<unknown, {}, FilaEspera, {
         id: string;
     }, import("mongoose").DefaultSchemaOptions> & Omit<FilaEspera & {
         _id: Types.ObjectId;

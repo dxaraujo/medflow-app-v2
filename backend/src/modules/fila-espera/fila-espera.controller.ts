@@ -27,16 +27,16 @@ export class FilaEsperaController {
   @Get()
   @ApiOperation({ summary: 'Listar fila de espera' })
   @ApiQuery({ name: 'profissional_id', required: false })
-  @ApiQuery({ name: 'local_id', required: false })
+  @ApiQuery({ name: 'local_atendimento_id', required: false })
   @ApiQuery({ name: 'status', required: false })
   findAll(
     @Query('profissional_id') profissional_id?: string,
-    @Query('local_id') local_id?: string,
+    @Query('local_atendimento_id') local_atendimento_id?: string,
     @Query('status') status?: string,
   ) {
     return this.filaEsperaService.findAll({
       profissional_id,
-      local_id,
+      local_atendimento_id,
       status,
     });
   }

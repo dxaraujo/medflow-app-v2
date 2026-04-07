@@ -105,7 +105,7 @@ const STATUS_LIST = [
 ];
 class CreateAgendamentoDto {
     profissional_id;
-    local_id;
+    local_atendimento_id;
     tipo;
     paciente_id;
     data_horario_inicio;
@@ -133,7 +133,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'ID do local de atendimento' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateAgendamentoDto.prototype, "local_id", void 0);
+], CreateAgendamentoDto.prototype, "local_atendimento_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ enum: TIPOS }),
     (0, class_validator_1.IsEnum)(TIPOS),

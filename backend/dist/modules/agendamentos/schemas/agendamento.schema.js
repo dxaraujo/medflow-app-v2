@@ -103,7 +103,7 @@ exports.STATUS_AGENDAMENTO = [
 ];
 let Agendamento = class Agendamento {
     profissional_id;
-    local_id;
+    local_atendimento_id;
     tipo;
     paciente_id;
     data_horario_inicio;
@@ -129,7 +129,7 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'LocalAtendimento', required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
-], Agendamento.prototype, "local_id", void 0);
+], Agendamento.prototype, "local_atendimento_id", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: String, required: true, enum: exports.TIPO_AGENDAMENTO }),
     __metadata("design:type", String)
@@ -200,7 +200,7 @@ exports.Agendamento = Agendamento = __decorate([
 exports.AgendamentoSchema = mongoose_1.SchemaFactory.createForClass(Agendamento);
 exports.AgendamentoSchema.index({
     profissional_id: 1,
-    local_id: 1,
+    local_atendimento_id: 1,
     'data_horario_inicio.data_completa': 1,
 });
 exports.AgendamentoSchema.index({

@@ -51,7 +51,7 @@ export class FilaEspera {
   profissional_id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'LocalAtendimento', required: true })
-  local_id: Types.ObjectId;
+  local_atendimento_id: Types.ObjectId;
 
   @Prop({ type: DataInfoSchema, required: true })
   horario_checkin: DataInfo;
@@ -90,7 +90,7 @@ export const FilaEsperaSchema = SchemaFactory.createForClass(FilaEspera);
 
 FilaEsperaSchema.index({
   profissional_id: 1,
-  local_id: 1,
+  local_atendimento_id: 1,
   status: 1,
   posicao_fila: 1,
 });

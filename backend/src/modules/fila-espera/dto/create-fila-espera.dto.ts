@@ -57,7 +57,7 @@ export class CreateFilaEsperaDto {
 
   @ApiProperty({ description: 'ID do local de atendimento' })
   @IsString()
-  local_id: string;
+  local_atendimento_id: string;
 
   @ApiProperty({ type: CreateDataInfoDto })
   @ValidateNested()
