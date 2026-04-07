@@ -46,7 +46,10 @@ export class CreateConvenioDto {
   @IsString()
   nome_convenio: string;
 
-  @ApiPropertyOptional({ example: '123456', description: 'Código ANS da operadora' })
+  @ApiPropertyOptional({
+    example: '123456',
+    description: 'Código ANS da operadora',
+  })
   @IsOptional()
   @IsString()
   codigo_ans?: string;

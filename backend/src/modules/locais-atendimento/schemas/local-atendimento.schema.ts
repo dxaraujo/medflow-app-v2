@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Endereco, EnderecoSchema } from '../../../common/schemas/endereco.schema';
+import {
+  Endereco,
+  EnderecoSchema,
+} from '../../../common/schemas/endereco.schema';
 
 export type LocalAtendimentoDocument = HydratedDocument<LocalAtendimento>;
 
@@ -52,8 +55,9 @@ export class ConfiguracaoProfissional {
   duracoes_por_tipo: DuracoesPorTipo;
 }
 
-export const ConfiguracaoProfissionalSchema =
-  SchemaFactory.createForClass(ConfiguracaoProfissional);
+export const ConfiguracaoProfissionalSchema = SchemaFactory.createForClass(
+  ConfiguracaoProfissional,
+);
 
 @Schema({ timestamps: true, collection: 'locais_atendimento' })
 export class LocalAtendimento {

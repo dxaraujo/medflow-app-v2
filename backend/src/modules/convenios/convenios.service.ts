@@ -8,7 +8,10 @@ import { Model } from 'mongoose';
 import { Convenio, ConvenioDocument } from './schemas/convenio.schema';
 import { CreateConvenioDto } from './dto/create-convenio.dto';
 import { UpdateConvenioDto } from './dto/update-convenio.dto';
-import { PaginationDto, PaginatedResult } from '../../common/dto/pagination.dto';
+import {
+  PaginationDto,
+  PaginatedResult,
+} from '../../common/dto/pagination.dto';
 
 @Injectable()
 export class ConveniosService {
