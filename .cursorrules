@@ -1,0 +1,48 @@
+# MedFlow - Regras do Cursor IDE
+
+## Projeto
+- Sistema de gerenciamento de consultório médico
+- Backend: NestJS + TypeScript + MongoDB (Mongoose)
+- Frontend (futuro): React + TypeScript
+
+## Documentação
+- Regras gerais: /docs/rules.md
+- Arquitetura: /docs/arch.md
+- API endpoints: /docs/api.md
+- Banco de dados: /docs/database.md
+- Features: /docs/features/*.md
+
+## Padrões de Código (Backend)
+
+### Estrutura de Módulo
+Cada módulo NestJS segue:
+- `schemas/` - Mongoose schemas
+- `dto/` - Data Transfer Objects com class-validator
+- `*.controller.ts` - Endpoints REST
+- `*.service.ts` - Lógica de negócio
+- `*.module.ts` - Definição do módulo
+
+### Convenções
+- Arquivos: kebab-case (ex: create-patient.dto.ts)
+- Classes: PascalCase (ex: PatientsService)
+- Métodos/variáveis: camelCase (ex: findById)
+- Constantes: UPPER_SNAKE_CASE
+- Sempre usar DTOs para validação de entrada
+- Sempre documentar endpoints com @ApiOperation do Swagger
+- Usar guards para autenticação (JWT) e autorização (Roles)
+- Respostas padronizadas: { statusCode, message, data }
+- Paginação: { data, meta: { total, page, limit, totalPages } }
+
+### Autenticação
+- JWT Bearer token em todas as rotas protegidas
+- Roles: admin, doctor, receptionist
+- Guards: AuthGuard('jwt'), RolesGuard
+
+### Banco de Dados
+- MongoDB com Mongoose ODM
+- Soft delete com campo isActive
+- Timestamps automáticos (createdAt, updatedAt)
+- Índices definidos nos schemas
+
+### Commits
+- Seguir Conventional Commits (feat:, fix:, docs:, refactor:)

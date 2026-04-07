@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+*.js.map
+*.d.ts
+!jest.config.js
+coverage/
+.nyc_output/
