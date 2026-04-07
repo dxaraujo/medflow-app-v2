@@ -1,48 +1,35 @@
-# MedFlow - Regras do Cursor IDE
+# MedFlow — Cursor Rules
 
 ## Projeto
-- Sistema de gerenciamento de consultório médico
-- Backend: NestJS + TypeScript + MongoDB (Mongoose)
-- Frontend (futuro): React + TypeScript
+Sistema de gerenciamento de consultório médico.
+Backend: NestJS + TypeScript + MongoDB (Mongoose).
+Frontend: React (futuro).
+
+## Estrutura
+- `backend/src/common/` — Schemas, DTOs, pipes e helpers compartilhados
+- `backend/src/modules/` — Módulos de domínio (pacientes, profissionais, etc.)
+- `docs/` — Documentação (rules.md, arch.md, api.md, database.md)
+- `docs/features/` — Documentação de features específicas
+
+## Convenções
+- Arquivos: kebab-case (ex: `pacientes.controller.ts`)
+- Classes: PascalCase (ex: `PacientesService`)
+- Métodos/variáveis: camelCase
+- Campos MongoDB: snake_case (ex: `nome_completo`)
+- TypeScript strict — sem `any`
+- Validação via class-validator em todo DTO
+- Swagger decorators em todo endpoint e DTO
+
+## Padrões
+- Controllers delegam para Services (sem lógica no controller)
+- Soft delete com campo `ativo: boolean`
+- Paginação: `page` + `limit` (máx 100)
+- Prefixo global: `/api`
+- Datas usam sub-documento `DataInfo` (data_completa + campos desmembrados)
+- `buildDataInfo()` para criar DataInfo a partir de Date
+
+## Módulos (10)
+pacientes, profissionais, locais-atendimento, convenios, anamneses, atendimentos, agendamentos, fila-espera, lancamentos-receita, contas-pagar
 
 ## Documentação
-- Regras gerais: /docs/rules.md
-- Arquitetura: /docs/arch.md
-- API endpoints: /docs/api.md
-- Banco de dados: /docs/database.md
-- Features: /docs/features/*.md
-
-## Padrões de Código (Backend)
-
-### Estrutura de Módulo
-Cada módulo NestJS segue:
-- `schemas/` - Mongoose schemas
-- `dto/` - Data Transfer Objects com class-validator
-- `*.controller.ts` - Endpoints REST
-- `*.service.ts` - Lógica de negócio
-- `*.module.ts` - Definição do módulo
-
-### Convenções
-- Arquivos: kebab-case (ex: create-patient.dto.ts)
-- Classes: PascalCase (ex: PatientsService)
-- Métodos/variáveis: camelCase (ex: findById)
-- Constantes: UPPER_SNAKE_CASE
-- Sempre usar DTOs para validação de entrada
-- Sempre documentar endpoints com @ApiOperation do Swagger
-- Usar guards para autenticação (JWT) e autorização (Roles)
-- Respostas padronizadas: { statusCode, message, data }
-- Paginação: { data, meta: { total, page, limit, totalPages } }
-
-### Autenticação
-- JWT Bearer token em todas as rotas protegidas
-- Roles: admin, doctor, receptionist
-- Guards: AuthGuard('jwt'), RolesGuard
-
-### Banco de Dados
-- MongoDB com Mongoose ODM
-- Soft delete com campo isActive
-- Timestamps automáticos (createdAt, updatedAt)
-- Índices definidos nos schemas
-
-### Commits
-- Seguir Conventional Commits (feat:, fix:, docs:, refactor:)
+Consulte os arquivos em `/docs` para detalhes de arquitetura, API e banco.

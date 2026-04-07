@@ -1,97 +1,110 @@
-# MedFlow - Sistema de Gerenciamento de Consultório Médico
+# MedFlow — Sistema de Gerenciamento de Consultório Médico
 
-Sistema fullstack para gerenciamento de consultório médico, com backend em NestJS (TypeScript), banco MongoDB e frontend React (futuro).
+Aplicação fullstack para gerenciamento completo de consultórios médicos, incluindo agendamento, prontuário eletrônico, fila de espera e controle financeiro.
+
+## Stack
+
+| Camada | Tecnologia |
+|---|---|
+| **Backend** | NestJS + TypeScript |
+| **Banco de Dados** | MongoDB (via Mongoose) |
+| **Frontend** | React (futuro) |
 
 ## Estrutura do Projeto
 
 ```
-/medflow-app-v2
-├── /backend              # API NestJS + TypeScript + MongoDB
-│   ├── /src
-│   │   ├── /config       # Configurações da aplicação
-│   │   ├── /common       # Decorators, guards, filters, pipes, DTOs compartilhados
-│   │   ├── /modules
-│   │   │   ├── /auth             # Autenticação JWT e autorização RBAC
-│   │   │   ├── /users            # Gestão de usuários do sistema
-│   │   │   ├── /patients         # Cadastro e gestão de pacientes
-│   │   │   ├── /doctors          # Cadastro de médicos e horários
-│   │   │   ├── /appointments     # Agendamento de consultas
-│   │   │   ├── /medical-records  # Prontuários eletrônicos
-│   │   │   └── /prescriptions    # Prescrições médicas
-│   │   └── /shared       # Utilitários compartilhados
-│   └── /test
-├── /docs                 # Documentação do projeto
-│   ├── rules.md          # Regras de codificação e estilo
-│   ├── arch.md           # Arquitetura e fluxos de dados
-│   ├── api.md            # Contratos de API / Endpoints
-│   ├── database.md       # Esquema do banco de dados
-│   └── /features         # Documentação por feature
-│       ├── auth.md
-│       ├── patients.md
-│       ├── doctors.md
-│       ├── appointments.md
-│       ├── medical-records.md
-│       └── prescriptions.md
-└── /frontend (futuro)    # React + TypeScript
+/
+├── backend/               # API NestJS
+│   └── src/
+│       ├── common/        # Schemas, DTOs e helpers compartilhados
+│       └── modules/       # Módulos de domínio (10 módulos)
+├── docs/
+│   ├── rules.md           # Regras de codificação e estilo
+│   ├── arch.md            # Arquitetura e fluxos de dados
+│   ├── api.md             # Contratos de API / Endpoints
+│   ├── database.md        # Esquema do banco de dados
+│   └── features/          # Documentação de features
+└── README.md
 ```
-
-## Tecnologias
-
-### Backend
-- **NestJS** - Framework Node.js com TypeScript
-- **MongoDB** + **Mongoose** - Banco de dados NoSQL
-- **JWT** - Autenticação stateless
-- **Passport** - Estratégias de autenticação
-- **class-validator** / **class-transformer** - Validação de DTOs
-- **Swagger/OpenAPI** - Documentação interativa da API
-
-## Pré-requisitos
-
-- Node.js 18+
-- MongoDB 6+
-- npm ou yarn
-
-## Instalação e Execução
-
-```bash
-# Instalar dependências
-cd backend
-npm install
-
-# Configurar variáveis de ambiente
-cp .env.example .env
-# Editar .env com suas configurações
-
-# Executar em modo de desenvolvimento
-npm run start:dev
-
-# Build para produção
-npm run build
-npm run start:prod
-```
-
-## Documentação da API
-
-Com o servidor rodando, acesse:
-- **Swagger UI**: http://localhost:3000/api/docs
-- **API Base URL**: http://localhost:3000/api/v1
 
 ## Módulos
 
 | Módulo | Descrição |
-|--------|-----------|
-| **Auth** | Registro, login, refresh token, perfil |
-| **Users** | CRUD de usuários do sistema |
-| **Patients** | Cadastro e gestão de pacientes |
-| **Doctors** | Cadastro de médicos, especialidades, horários |
-| **Appointments** | Agendamento, status, cancelamento de consultas |
-| **Medical Records** | Prontuário eletrônico com CID-10 |
-| **Prescriptions** | Prescrições médicas com posologia |
+|---|---|
+| Pacientes | Cadastro demográfico e administrativo |
+| Profissionais | Médicos e atendentes |
+| Locais de Atendimento | Consultórios e configuração de agenda |
+| Convênios | Planos de saúde e tabelas de procedimentos |
+| Anamneses | Histórico clínico do paciente (1:1) |
+| Atendimentos | Registro de evolução clínica por consulta |
+| Agendamentos | Grade de agenda com bloqueios |
+| Fila de Espera | Fluxo operacional do dia (TTL 48h) |
+| Lançamentos de Receita | Controle de recebimentos |
+| Contas a Pagar | Controle de despesas |
 
-## Roles e Permissões
+## Pré-requisitos
 
-| Role | Descrição |
-|------|-----------|
-| `admin` | Acesso total ao sistema |
-| `doctor` | Consultas, prontuários, prescrições |
-| `receptionist` | Agendamentos, pacientes, médicos |
+- Node.js 20+
+- MongoDB 7+
+- npm 10+
+
+## Instalação
+
+```bash
+cd backend
+npm install
+```
+
+## Configuração
+
+Copie o arquivo de exemplo e ajuste as variáveis:
+
+```bash
+cp .env.example .env
+```
+
+Variáveis disponíveis:
+
+| Variável | Descrição | Default |
+|---|---|---|
+| `MONGODB_URI` | URI de conexão MongoDB | `mongodb://localhost:27017/medflow` |
+| `PORT` | Porta da aplicação | `3000` |
+
+## Execução
+
+```bash
+# Desenvolvimento
+cd backend
+npm run start:dev
+
+# Produção
+npm run build
+npm run start:prod
+```
+
+## API
+
+Swagger UI disponível em: `http://localhost:3000/api/docs`
+
+Prefixo de todas as rotas: `/api`
+
+## Testes
+
+```bash
+# Testes unitários
+npm run test
+
+# Testes e2e
+npm run test:e2e
+
+# Cobertura
+npm run test:cov
+```
+
+## Documentação
+
+- [Regras de Codificação](docs/rules.md)
+- [Arquitetura](docs/arch.md)
+- [Contratos de API](docs/api.md)
+- [Esquema do Banco](docs/database.md)
+- [Modelo MongoDB Original](docs/features/modelo-mongodb-consultorio-medico.md)

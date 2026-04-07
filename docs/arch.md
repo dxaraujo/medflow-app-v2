@@ -1,131 +1,144 @@
-# MedFlow - Arquitetura e Fluxos de Dados
+# Arquitetura — MedFlow Backend
+
+---
 
 ## Visão Geral
 
-O MedFlow é um sistema de gerenciamento de consultório médico composto por:
-
-- **Backend API**: NestJS (Node.js) com TypeScript
-- **Banco de Dados**: MongoDB (NoSQL)
-- **Frontend** (futuro): React com TypeScript
-
-## Arquitetura do Backend
+Aplicação backend monolítica modular construída com **NestJS** (TypeScript), persistindo dados em **MongoDB** via **Mongoose**. Cada domínio de negócio é um módulo NestJS independente.
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                      Client (React)                      │
-└──────────────────────────┬──────────────────────────────┘
-                           │ HTTP/REST
-┌──────────────────────────▼──────────────────────────────┐
-│                    NestJS API Server                      │
-│  ┌─────────────────────────────────────────────────────┐ │
-│  │                   Guards (JWT Auth)                  │ │
-│  ├─────────────────────────────────────────────────────┤ │
-│  │                  Interceptors (Logging)              │ │
-│  ├─────────────────────────────────────────────────────┤ │
-│  │                    Controllers                       │ │
-│  │  ┌──────┐ ┌─────────┐ ┌────────┐ ┌──────────────┐  │ │
-│  │  │ Auth │ │ Patients│ │Doctors │ │ Appointments │  │ │
-│  │  └──┬───┘ └────┬────┘ └───┬────┘ └──────┬───────┘  │ │
-│  ├─────┼──────────┼──────────┼─────────────┼──────────┤ │
-│  │                    Services                          │ │
-│  │  ┌──────┐ ┌─────────┐ ┌────────┐ ┌──────────────┐  │ │
-│  │  │ Auth │ │ Patients│ │Doctors │ │ Appointments │  │ │
-│  │  └──┬───┘ └────┬────┘ └───┬────┘ └──────┬───────┘  │ │
-│  ├─────┼──────────┼──────────┼─────────────┼──────────┤ │
-│  │                 Mongoose Models                      │ │
-│  └─────────────────────┬───────────────────────────────┘ │
-└────────────────────────┼────────────────────────────────┘
-                         │
-┌────────────────────────▼────────────────────────────────┐
-│                      MongoDB                             │
-│  ┌───────┐ ┌──────────┐ ┌─────────┐ ┌──────────────┐   │
-│  │ users │ │ patients │ │ doctors │ │ appointments │   │
-│  └───────┘ └──────────┘ └─────────┘ └──────────────┘   │
-│  ┌─────────────────┐ ┌──────────────┐                   │
-│  │ medical-records │ │ prescriptions│                   │
-│  └─────────────────┘ └──────────────┘                   │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│                  Cliente                    │
+│            (React — futuro)                 │
+└──────────────────┬──────────────────────────┘
+                   │ HTTP/REST (JSON)
+┌──────────────────▼──────────────────────────┐
+│              NestJS API                     │
+│  ┌──────────┬──────────┬──────────────────┐ │
+│  │Controller│  Service │    Schema/DTO    │ │
+│  │  (REST)  │(Business)│   (Mongoose)     │ │
+│  └──────────┴──────────┴──────────────────┘ │
+│                                             │
+│  Modules:                                   │
+│  ├── Pacientes                              │
+│  ├── Profissionais                          │
+│  ├── Locais de Atendimento                  │
+│  ├── Convênios                              │
+│  ├── Anamneses                              │
+│  ├── Atendimentos                           │
+│  ├── Agendamentos                           │
+│  ├── Fila de Espera                         │
+│  ├── Lançamentos Receita                    │
+│  └── Contas a Pagar                         │
+└──────────────────┬──────────────────────────┘
+                   │ Mongoose ODM
+┌──────────────────▼──────────────────────────┐
+│               MongoDB                       │
+│         (10 collections)                    │
+└─────────────────────────────────────────────┘
 ```
 
-## Módulos Principais
+---
 
-### 1. Auth Module
-- Registro e login de usuários do sistema
-- JWT para autenticação stateless
-- Roles: `admin`, `doctor`, `receptionist`
-- Guards para proteção de rotas
+## Camadas
 
-### 2. Users Module
-- CRUD de usuários do sistema (admin, médicos, recepcionistas)
-- Gerenciamento de perfis e permissões
+### 1. Controller
+- Recebe requisições HTTP
+- Valida entrada via DTOs (class-validator)
+- Delega para o Service
+- Retorna resposta HTTP com status code adequado
 
-### 3. Patients Module
-- Cadastro completo de pacientes
-- Dados pessoais, contato, endereço, convênio
-- Histórico de consultas vinculado
+### 2. Service
+- Contém toda a lógica de negócio
+- Interage com o Model do Mongoose
+- Lança exceções HTTP do NestJS quando necessário
+- Responsável por validações complexas (ex: overlap de horários)
 
-### 4. Doctors Module
-- Cadastro de médicos com especialidades
-- CRM e dados profissionais
-- Horários de atendimento disponíveis
+### 3. Schema (Mongoose)
+- Define a estrutura do documento MongoDB
+- Configura índices, defaults e validações a nível de banco
+- Sub-documentos reutilizáveis (`DataInfo`, `Endereco`, `Contato`) ficam em `common/schemas/`
 
-### 5. Appointments Module
-- Agendamento, reagendamento e cancelamento de consultas
-- Verificação de conflitos de horário
-- Status: `scheduled`, `confirmed`, `in_progress`, `completed`, `cancelled`, `no_show`
+### 4. DTO (Data Transfer Object)
+- Define o contrato de entrada da API
+- Decorators de validação (`@IsString`, `@IsEnum`, etc.)
+- Decorators de documentação Swagger (`@ApiProperty`)
+- `CreateXxxDto` para criação, `UpdateXxxDto` (PartialType) para atualização
 
-### 6. Medical Records Module
-- Prontuário eletrônico do paciente
-- Anamnese, exame físico, hipótese diagnóstica
-- CID-10 vinculado
-- Evolução clínica
-
-### 7. Prescriptions Module
-- Prescrições médicas vinculadas ao prontuário
-- Medicamentos, posologia, duração
-- Impressão/exportação
+---
 
 ## Fluxos de Dados Principais
 
-### Fluxo de Agendamento
+### Fluxo de Consulta (Happy Path)
 
 ```
-1. Recepcionista acessa sistema (login)
-2. Busca paciente ou cadastra novo
-3. Seleciona médico e especialidade
-4. Verifica horários disponíveis
-5. Cria agendamento
-6. Paciente é notificado (futuro)
+1. Agendamento criado (status: agendado)
+2. Paciente faz check-in → Fila de Espera (status: aguardando)
+3. Agendamento → status: em_espera
+4. Chamado → Fila (status: em_atendimento), Agendamento (status: em_atendimento)
+5. Atendimento criado (status: em_andamento)
+6. Médico finaliza → Atendimento (status: finalizado)
+7. Agendamento → status: finalizado
+8. Fila → status: atendido
+9. Lançamento de receita criado
 ```
 
-### Fluxo de Consulta
+### Fluxo Financeiro
 
 ```
-1. Médico acessa sistema (login)
-2. Visualiza agenda do dia
-3. Inicia atendimento (status → in_progress)
-4. Registra prontuário (anamnese, exame, diagnóstico)
-5. Emite prescrição (se necessário)
-6. Finaliza consulta (status → completed)
+Atendimento finalizado
+  ├── Particular → lancamentos_receita (dados_particular)
+  └── Convênio   → lancamentos_receita (dados_convenio + status_faturamento)
+
+Despesas operacionais → contas_pagar (independente)
+
+Dashboard = agregação de lancamentos_receita + contas_pagar
 ```
 
-### Fluxo de Autenticação
+---
+
+## Módulos e Dependências
 
 ```
-1. Usuário envia credenciais (POST /auth/login)
-2. Backend valida credenciais no MongoDB
-3. Gera JWT token (access + refresh)
-4. Cliente armazena token
-5. Requests subsequentes enviam token no header Authorization
-6. Guard valida token e extrai role do usuário
+AppModule
+├── MongooseModule.forRoot(...)
+├── PacientesModule
+├── ProfissionaisModule
+├── LocaisAtendimentoModule
+├── ConveniosModule
+├── AnamnesesModule         → PacientesModule, ProfissionaisModule
+├── AtendimentosModule      → PacientesModule, ProfissionaisModule, LocaisAtendimentoModule
+├── AgendamentosModule      → PacientesModule, ProfissionaisModule, LocaisAtendimentoModule
+├── FilaEsperaModule        → PacientesModule, ProfissionaisModule, AgendamentosModule
+├── LancamentosReceitaModule → AtendimentosModule, PacientesModule, ConveniosModule
+└── ContasPagarModule
 ```
 
-## Comunicação entre Módulos
+---
 
-- **Appointments → Patients**: Valida existência do paciente
-- **Appointments → Doctors**: Valida existência e disponibilidade do médico
-- **Medical Records → Patients**: Vincula prontuário ao paciente
-- **Medical Records → Doctors**: Registra médico responsável
-- **Medical Records → Appointments**: Vincula à consulta
-- **Prescriptions → Medical Records**: Vincula prescrição ao prontuário
-- **Prescriptions → Doctors**: Registra médico prescritor
+## Configuração de Ambiente
+
+Variáveis de ambiente via `@nestjs/config`:
+
+| Variável | Descrição | Default |
+|---|---|---|
+| `MONGODB_URI` | URI de conexão MongoDB | `mongodb://localhost:27017/medflow` |
+| `PORT` | Porta da aplicação | `3000` |
+| `NODE_ENV` | Ambiente | `development` |
+
+---
+
+## Segurança (Futuro)
+
+- Autenticação JWT (módulo futuro)
+- CORS configurado
+- Helmet para headers de segurança
+- Rate limiting
+
+---
+
+## Observabilidade
+
+- Logs estruturados via Logger do NestJS
+- Health checks (`/api/health`)
+- Swagger UI disponível em `/api/docs`

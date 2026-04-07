@@ -1,35 +1,40 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import configuration from './config/configuration';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
-import { PatientsModule } from './modules/patients/patients.module';
-import { DoctorsModule } from './modules/doctors/doctors.module';
-import { AppointmentsModule } from './modules/appointments/appointments.module';
-import { MedicalRecordsModule } from './modules/medical-records/medical-records.module';
-import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
+import { PacientesModule } from './modules/pacientes/pacientes.module';
+import { ProfissionaisModule } from './modules/profissionais/profissionais.module';
+import { LocaisAtendimentoModule } from './modules/locais-atendimento/locais-atendimento.module';
+import { ConveniosModule } from './modules/convenios/convenios.module';
+import { AnamnesesModule } from './modules/anamneses/anamneses.module';
+import { AtendimentosModule } from './modules/atendimentos/atendimentos.module';
+import { AgendamentosModule } from './modules/agendamentos/agendamentos.module';
+import { FilaEsperaModule } from './modules/fila-espera/fila-espera.module';
+import { LancamentosReceitaModule } from './modules/lancamentos-receita/lancamentos-receita.module';
+import { ContasPagarModule } from './modules/contas-pagar/contas-pagar.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [configuration],
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('mongodb.uri'),
-      }),
       inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        uri: config.get<string>(
+          'MONGODB_URI',
+          'mongodb://localhost:27017/medflow',
+        ),
+      }),
     }),
-    AuthModule,
-    UsersModule,
-    PatientsModule,
-    DoctorsModule,
-    AppointmentsModule,
-    MedicalRecordsModule,
-    PrescriptionsModule,
+    PacientesModule,
+    ProfissionaisModule,
+    LocaisAtendimentoModule,
+    ConveniosModule,
+    AnamnesesModule,
+    AtendimentosModule,
+    AgendamentosModule,
+    FilaEsperaModule,
+    LancamentosReceitaModule,
+    ContasPagarModule,
   ],
 })
 export class AppModule {}

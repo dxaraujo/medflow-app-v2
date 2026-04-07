@@ -1,123 +1,108 @@
-# MedFlow - Regras Gerais de Codificação e Estilo
+# Regras de Codificação e Estilo — MedFlow Backend
 
-## Linguagem e Framework
+---
 
-- **Backend**: NestJS com TypeScript
-- **Banco de Dados**: MongoDB com Mongoose ODM
-- **Frontend** (futuro): React com TypeScript
+## Stack Tecnológico
+
+- **Runtime:** Node.js 20+
+- **Framework:** NestJS 10+ com TypeScript
+- **Banco de dados:** MongoDB 7+ via Mongoose
+- **Linguagem:** TypeScript 5+ (strict mode)
+- **Testes:** Jest + Supertest
+- **Documentação API:** Swagger (via `@nestjs/swagger`)
+- **Validação:** class-validator + class-transformer
+
+---
+
+## Estrutura de Pastas
+
+```
+src/
+├── common/                    # Utilitários, decorators, pipes, filtros globais
+│   ├── schemas/               # Sub-documentos reutilizáveis (DataInfo, Endereco, Contato)
+│   ├── dto/                   # DTOs compartilhados
+│   ├── pipes/                 # Pipes customizados (ex: ParseObjectIdPipe)
+│   ├── filters/               # Exception filters
+│   └── helpers/               # Funções utilitárias (ex: buildDataInfo)
+├── modules/
+│   ├── pacientes/
+│   │   ├── pacientes.module.ts
+│   │   ├── pacientes.controller.ts
+│   │   ├── pacientes.service.ts
+│   │   ├── schemas/
+│   │   │   └── paciente.schema.ts
+│   │   └── dto/
+│   │       ├── create-paciente.dto.ts
+│   │       └── update-paciente.dto.ts
+│   ├── profissionais/
+│   ├── locais-atendimento/
+│   ├── convenios/
+│   ├── anamneses/
+│   ├── atendimentos/
+│   ├── agendamentos/
+│   ├── fila-espera/
+│   ├── lancamentos-receita/
+│   └── contas-pagar/
+├── app.module.ts
+└── main.ts
+```
+
+---
 
 ## Convenções de Nomenclatura
 
-### TypeScript / NestJS
+| Elemento | Convenção | Exemplo |
+|---|---|---|
+| Arquivos | kebab-case | `pacientes.controller.ts` |
+| Classes | PascalCase | `PacientesService` |
+| Métodos/variáveis | camelCase | `findByCpf`, `nomeCompleto` |
+| Constantes | UPPER_SNAKE_CASE | `MAX_PAGE_SIZE` |
+| Campos MongoDB | snake_case | `nome_completo`, `data_nascimento` |
+| Enums TypeScript | PascalCase (tipo) + UPPER_SNAKE_CASE (valores) | `TipoAtendimento.CONSULTA` |
 
-- **Classes**: PascalCase (ex: `PatientService`, `AppointmentController`)
-- **Interfaces**: PascalCase prefixadas com `I` (ex: `IPatient`, `IAppointment`)
-- **Métodos e variáveis**: camelCase (ex: `findPatientById`, `isAppointmentValid`)
-- **Constantes**: UPPER_SNAKE_CASE (ex: `MAX_APPOINTMENTS_PER_DAY`, `DEFAULT_PAGE_SIZE`)
-- **Enums**: PascalCase para o enum, UPPER_SNAKE_CASE para os valores
-- **Arquivos**: kebab-case (ex: `patient.service.ts`, `create-appointment.dto.ts`)
+---
 
-### MongoDB / Mongoose
+## Regras Gerais
 
-- **Collections**: plural, kebab-case (ex: `patients`, `medical-records`)
-- **Campos**: camelCase (ex: `firstName`, `appointmentDate`)
+1. **Strict TypeScript** — Não usar `any`. Tipar todas as entradas e saídas.
+2. **Validação** — Todo DTO deve usar decorators de `class-validator`.
+3. **DTOs separados** — `CreateXxxDto` e `UpdateXxxDto` (via `PartialType`).
+4. **Swagger** — Anotar todos os endpoints e DTOs com `@nestjs/swagger`.
+5. **Tratamento de erros** — Usar exceptions do NestJS (`NotFoundException`, `BadRequestException`, etc.)
+6. **Paginação** — Padrão `page` + `limit` com `limit` máximo de 100.
+7. **Soft delete** — Usar campo `ativo: boolean` ao invés de deletar registros.
+8. **Sem lógica no controller** — Controllers apenas delegam para services.
+9. **Injeção de dependência** — Sempre via construtor.
+10. **Imutabilidade de atendimentos** — Após status `finalizado`, não permitir edição.
 
-## Estrutura de Pastas (Backend)
+---
 
-```
-/backend
-├── src/
-│   ├── main.ts
-│   ├── app.module.ts
-│   ├── config/               # Configurações da aplicação
-│   ├── common/               # Decorators, pipes, guards, filters compartilhados
-│   │   ├── decorators/
-│   │   ├── pipes/
-│   │   ├── guards/
-│   │   ├── filters/
-│   │   └── interceptors/
-│   ├── modules/
-│   │   ├── auth/             # Autenticação e autorização
-│   │   ├── users/            # Gestão de usuários do sistema
-│   │   ├── patients/         # Gestão de pacientes
-│   │   ├── doctors/          # Gestão de médicos
-│   │   ├── appointments/     # Agendamento de consultas
-│   │   ├── medical-records/  # Prontuários médicos
-│   │   └── prescriptions/    # Prescrições médicas
-│   └── shared/               # Utilitários e helpers compartilhados
-├── test/
-├── .env
-├── .env.example
-├── nest-cli.json
-├── tsconfig.json
-└── package.json
-```
+## Padrões de API REST
 
-## Cada Módulo Segue a Estrutura
+| Operação | Método | Rota | Status Code |
+|---|---|---|---|
+| Listar (paginado) | GET | `/api/{recurso}` | 200 |
+| Buscar por ID | GET | `/api/{recurso}/:id` | 200 / 404 |
+| Criar | POST | `/api/{recurso}` | 201 |
+| Atualizar | PATCH | `/api/{recurso}/:id` | 200 / 404 |
+| Remover (soft) | DELETE | `/api/{recurso}/:id` | 200 / 404 |
 
-```
-/module-name/
-├── dto/                    # Data Transfer Objects
-│   ├── create-*.dto.ts
-│   └── update-*.dto.ts
-├── schemas/                # Mongoose schemas
-│   └── *.schema.ts
-├── *.controller.ts         # Controller REST
-├── *.service.ts            # Lógica de negócio
-├── *.module.ts             # Definição do módulo NestJS
-└── *.controller.spec.ts    # Testes
-```
+Prefixo global: `/api`
 
-## Regras de Codificação
+---
 
-1. **Sempre usar tipos explícitos** - Evitar `any` sempre que possível
-2. **DTOs para validação** - Usar `class-validator` e `class-transformer` em todos os endpoints
-3. **Tratamento de erros** - Usar `HttpException` e filtros de exceção customizados
-4. **Documentação de API** - Usar decorators do Swagger/OpenAPI em todos os endpoints
-5. **Variáveis de ambiente** - Usar `@nestjs/config` para gerenciar configurações
-6. **Injeção de dependência** - Preferir injeção por construtor
-7. **Princípio de responsabilidade única** - Um serviço por domínio
-8. **Logs estruturados** - Usar o Logger do NestJS
+## Validação de Campos Comuns
 
-## Padrões de Resposta da API
+- **CPF**: 11 dígitos, validação de algoritmo
+- **CEP**: formato `00000-000`
+- **Telefone**: com DDD
+- **Duração (minutos)**: múltiplo de 5, entre 5 e 120
+- **ObjectId**: validar formato antes de queries
 
-### Sucesso
+---
 
-```json
-{
-  "statusCode": 200,
-  "message": "Operação realizada com sucesso",
-  "data": { ... }
-}
-```
+## Testes
 
-### Erro
-
-```json
-{
-  "statusCode": 400,
-  "message": "Descrição do erro",
-  "error": "Bad Request"
-}
-```
-
-### Listagem com Paginação
-
-```json
-{
-  "statusCode": 200,
-  "message": "Listagem realizada com sucesso",
-  "data": [ ... ],
-  "meta": {
-    "total": 100,
-    "page": 1,
-    "limit": 10,
-    "totalPages": 10
-  }
-}
-```
-
-## Versionamento
-
-- Commits seguem Conventional Commits (ex: `feat:`, `fix:`, `docs:`)
-- Branches seguem o padrão: `feature/`, `fix/`, `docs/`
+- Testes unitários para services (`.spec.ts`)
+- Testes e2e para controllers (`test/*.e2e-spec.ts`)
+- Mínimo de cobertura: regras de negócio críticas
