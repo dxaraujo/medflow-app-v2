@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { DataInfo, DataInfoSchema } from '../../../common/schemas/data-info.schema';
+import {
+  DataInfo,
+  DataInfoSchema,
+} from '../../../common/schemas/data-info.schema';
 
 export type AtendimentoDocument = HydratedDocument<Atendimento>;
 
@@ -13,7 +16,11 @@ export const TIPOS_ATENDIMENTO = [
 ] as const;
 export type TipoAtendimento = (typeof TIPOS_ATENDIMENTO)[number];
 
-export const STATUS_ATENDIMENTO = ['em_andamento', 'finalizado', 'cancelado'] as const;
+export const STATUS_ATENDIMENTO = [
+  'em_andamento',
+  'finalizado',
+  'cancelado',
+] as const;
 export type StatusAtendimento = (typeof STATUS_ATENDIMENTO)[number];
 
 @Schema({ _id: false })
@@ -154,8 +161,9 @@ export class ProcedimentoAtendimento {
   observacoes?: string;
 }
 
-export const ProcedimentoAtendimentoSchema =
-  SchemaFactory.createForClass(ProcedimentoAtendimento);
+export const ProcedimentoAtendimentoSchema = SchemaFactory.createForClass(
+  ProcedimentoAtendimento,
+);
 
 export const VIAS_ADMINISTRACAO = [
   'oral',
@@ -198,11 +206,16 @@ export class ItemPrescricao {
   observacoes?: string;
 }
 
-export const ItemPrescricaoSchema = SchemaFactory.createForClass(ItemPrescricao);
+export const ItemPrescricaoSchema =
+  SchemaFactory.createForClass(ItemPrescricao);
 
 @Schema({ _id: false })
 export class PrescricoesAtendimento {
-  @Prop({ type: String, required: true, enum: ['simples', 'especial', 'controle_especial'] })
+  @Prop({
+    type: String,
+    required: true,
+    enum: ['simples', 'especial', 'controle_especial'],
+  })
   tipo_receita: string;
 
   @Prop({ type: String })
@@ -212,12 +225,17 @@ export class PrescricoesAtendimento {
   itens: ItemPrescricao[];
 }
 
-export const PrescricoesAtendimentoSchema =
-  SchemaFactory.createForClass(PrescricoesAtendimento);
+export const PrescricoesAtendimentoSchema = SchemaFactory.createForClass(
+  PrescricoesAtendimento,
+);
 
 @Schema({ _id: false })
 export class PedidoExame {
-  @Prop({ type: String, required: true, enum: ['laboratorial', 'imagem', 'outro'] })
+  @Prop({
+    type: String,
+    required: true,
+    enum: ['laboratorial', 'imagem', 'outro'],
+  })
   tipo_exame: string;
 
   @Prop({ type: String, required: true })
@@ -316,7 +334,8 @@ export class DocumentoAnexado {
   profissional_upload_id: Types.ObjectId;
 }
 
-export const DocumentoAnexadoSchema = SchemaFactory.createForClass(DocumentoAnexado);
+export const DocumentoAnexadoSchema =
+  SchemaFactory.createForClass(DocumentoAnexado);
 
 @Schema({ timestamps: true, collection: 'atendimentos' })
 export class Atendimento {

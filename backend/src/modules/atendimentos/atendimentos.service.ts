@@ -5,10 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import {
-  Atendimento,
-  AtendimentoDocument,
-} from './schemas/atendimento.schema';
+import { Atendimento, AtendimentoDocument } from './schemas/atendimento.schema';
 import { CreateAtendimentoDto } from './dto/create-atendimento.dto';
 import { UpdateAtendimentoDto } from './dto/update-atendimento.dto';
 import {
@@ -82,9 +79,7 @@ export class AtendimentosService {
     if (!ex) return undefined;
     const seg = ex.segmentar;
     const mapSeg = (s?: { normal: boolean; descricao?: string }) =>
-      s
-        ? { normal: s.normal, descricao: s.descricao ?? '' }
-        : undefined;
+      s ? { normal: s.normal, descricao: s.descricao ?? '' } : undefined;
     return {
       ...ex,
       segmentar: seg

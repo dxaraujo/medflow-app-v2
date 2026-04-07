@@ -20,7 +20,9 @@ export class LocaisAtendimentoService {
   ) {}
 
   private mapConfiguracoes(
-    items: NonNullable<CreateLocalAtendimentoDto['configuracoes_profissionais']>,
+    items: NonNullable<
+      CreateLocalAtendimentoDto['configuracoes_profissionais']
+    >,
   ) {
     return items.map((c) => ({
       ...c,
@@ -29,7 +31,9 @@ export class LocaisAtendimentoService {
     }));
   }
 
-  async create(dto: CreateLocalAtendimentoDto): Promise<LocalAtendimentoDocument> {
+  async create(
+    dto: CreateLocalAtendimentoDto,
+  ): Promise<LocalAtendimentoDocument> {
     const data = {
       ...dto,
       configuracoes_profissionais: dto.configuracoes_profissionais?.length
@@ -89,8 +93,8 @@ export class LocaisAtendimentoService {
     const updateData: Record<string, unknown> = { ...dto };
 
     if (dto.configuracoes_profissionais !== undefined) {
-      updateData['configuracoes_profissionais'] = dto.configuracoes_profissionais
-        .length
+      updateData['configuracoes_profissionais'] = dto
+        .configuracoes_profissionais.length
         ? this.mapConfiguracoes(dto.configuracoes_profissionais)
         : [];
     }

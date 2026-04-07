@@ -1,0 +1,35 @@
+# MedFlow — Cursor Rules
+
+## Projeto
+Sistema de gerenciamento de consultório médico.
+Backend: NestJS + TypeScript + MongoDB (Mongoose).
+Frontend: React (futuro).
+
+## Estrutura
+- `backend/src/common/` — Schemas, DTOs, pipes e helpers compartilhados
+- `backend/src/modules/` — Módulos de domínio (pacientes, profissionais, etc.)
+- `docs/` — Documentação (rules.md, arch.md, api.md, database.md)
+- `docs/features/` — Documentação de features específicas
+
+## Convenções
+- Arquivos: kebab-case (ex: `pacientes.controller.ts`)
+- Classes: PascalCase (ex: `PacientesService`)
+- Métodos/variáveis: camelCase
+- Campos MongoDB: snake_case (ex: `nome_completo`)
+- TypeScript strict — sem `any`
+- Validação via class-validator em todo DTO
+- Swagger decorators em todo endpoint e DTO
+
+## Padrões
+- Controllers delegam para Services (sem lógica no controller)
+- Soft delete com campo `ativo: boolean`
+- Paginação: `page` + `limit` (máx 100)
+- Prefixo global: `/api`
+- Datas usam sub-documento `DataInfo` (data_completa + campos desmembrados)
+- `buildDataInfo()` para criar DataInfo a partir de Date
+
+## Módulos (10)
+pacientes, profissionais, locais-atendimento, convenios, anamneses, atendimentos, agendamentos, fila-espera, lancamentos-receita, contas-pagar
+
+## Documentação
+Consulte os arquivos em `/docs` para detalhes de arquitetura, API e banco.

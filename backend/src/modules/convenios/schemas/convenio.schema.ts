@@ -15,7 +15,8 @@ export class ContatoConvenio {
   representante?: string;
 }
 
-export const ContatoConvenioSchema = SchemaFactory.createForClass(ContatoConvenio);
+export const ContatoConvenioSchema =
+  SchemaFactory.createForClass(ContatoConvenio);
 
 @Schema({ _id: false })
 export class TabelaProcedimento {
